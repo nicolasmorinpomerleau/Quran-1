@@ -10,6 +10,42 @@ const HijryMonths = [ "Muḥarram (مُحَرَّم)", "Ṣafar (صَفَر)", "
 
 const suraId = document.getElementById('quran-container').firstChild.id;
 
+    // Detect the browser language
+    const userLang = navigator.language || navigator.userLanguage;
+
+    // Initialize labels based on user's browser language
+    // updateLabels(userLang.split('-')[0]); // Use only the language part, e.g., "en" from "en-US"
+
+
+    // Define translations for different languages
+    const translations = {
+        en: {
+          username: "Username",
+          password: "Password"
+        },
+        es: {
+          username: "Nombre de usuario",
+          password: "Contraseña"
+        },
+        fr: {
+          username: "Nom d'utilisateur",
+          password: "Mot de passe"
+        },
+        ar: {
+          username: "اسم المستخدم",
+          password: "كلمة المرور"
+        }
+        // Add more languages as needed
+      };
+
+        // Function to update labels based on the detected language
+// function updateLabels(lang) {
+//     const labels = translations[lang] || translations['en']; // Default to English if language not found
+//     document.getElementById('usernameLabel').textContent = labels.username;
+//     document.getElementById('passwordLabel').textContent = labels.password;
+//     };
+
+
 
 // Function to load Quran data
 function loadQuranData() {
@@ -379,7 +415,7 @@ function displaySecondLnleSura(suraId) {
     verses.forEach((line,index) => {
         if (secondQuranData[divId] !== undefined) {
             const secondVerse = document.createElement('p');
-            secondVerse.className = 'verse';
+            // secondVerse.className = 'verse2';
             secondVerse.textContent = secondQuranData[divId].verses[index].text;
             
             // Append array2 content below the existing array1 content
@@ -859,6 +895,8 @@ document.getElementById('context').addEventListener('click', () => {
             contentDiv.appendChild(sectionElem); 
             contentDiv.classList.replace("eraseDiv", "sura-contexte")
         });
+        
+        contentDiv.scrollTop = 0;
         const quranContainer = document.getElementById('quran-container');
         quranContainer.classList.replace("textContainer", "eraseDiv")
     }
@@ -873,10 +911,6 @@ document.getElementById('context').addEventListener('click', () => {
   
 
 async function getHijriCalendarForMonth() {
-    // const daysInMonth = new Date(year, month, 0).getDate(); // Get number of days in the Gregorian month
-    // const hijriDates = [];
-  
-
     const currentDate = new Date();
 
     const month1 = String(currentDate.getMonth() + 1).padStart(2, '0'); // Get the month (0-based, so add 1)
@@ -894,151 +928,27 @@ async function getHijriCalendarForMonth() {
         // Check if response is OK
         if (!response.ok) {
           console.error(`Error fetching data for ${gregorianDate}: ${response.statusText}`);
-        //   continue; // Skip to the next day if there's an error
         }
   
         const data = await response.json();
   
         if (data.code === 200) {
           const hijriDate = data.data.hijri.date;
-        //   const hijriMonth = data.data.hijri.month;
           const hijriDay  = data.data.hijri.day;
           const hijriYear =  data.data.hijri.year ;
-
 
           const hijriMonthNumber = data.data.hijri.month.number - 1;
           const hijriMonth = HijryMonths[hijriMonthNumber];
           displayHijriMonth(hijriMonth, hijriYear, hijriDay, formattedDate);
 
-
-        //   hijriDates.push({ gregorian: gregorianDate, hijri: hijriDate });
         } else {
           console.error(`API Error: ${data.data}`);
         }
       } catch (error) {
         console.error("Network error or invalid response:", error);
       }
-
-
-    // for (let day = 1; day <= daysInMonth; day++) {
-
-    // const gregorianDate = `${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}-${year}`;
-    //   const url = `https://api.aladhan.com/v1/gToH/${gregorianDate}`; // Correct API endpoint
-    // //   console.log('url: ', url)
-  
-    //   try {
-    //     const response = await fetch(url);
-  
-    //     // Check if response is OK
-    //     if (!response.ok) {
-    //       console.error(`Error fetching data for ${gregorianDate}: ${response.statusText}`);
-    //       continue; // Skip to the next day if there's an error
-    //     }
-  
-    //     const data = await response.json();
-  
-    //     if (data.code === 200) {
-    //       const hijriDate = data.data.hijri.date;
-
-    //       const hijriMonthNumber = data.data.hijri.month.number - 1;
-    //       const hijriMonth = HijryMonths[hijriMonthNumber];
-    //       displayHijriMonth(hijriMonth);
-
-
-    //       hijriDates.push({ gregorian: gregorianDate, hijri: hijriDate });
-    //     } else {
-    //       console.error(`API Error: ${data.data}`);
-    //     }
-    //   } catch (error) {
-    //     console.error("Network error or invalid response:", error);
-    //   }
-    // }
-  
-    // console.log("Hijri Calendar for the month:", hijriDates);
-    // return hijriDates;
   }
-//   async function getHijriCalendarForMonth(year, month) {
-//     const daysInMonth = new Date(year, month, 0).getDate(); // Get number of days in the Gregorian month
-//     const hijriDates = [];
-  
 
-//     const currentDate = new Date();
-
-//     const month1 = String(currentDate.getMonth() + 1).padStart(2, '0'); // Get the month (0-based, so add 1)
-//     const day1= String(currentDate.getDate()).padStart(2, '0');        // Get the day
-//     const year1 = currentDate.getFullYear();                            // Get the year
-
-//     const formattedDate = `${day1}-${month1}-${year1}`;                   // Format it as mm/dd/yyyy
-
-//     console.log(formattedDate);  // Output: "09/12/2024" (or whatever the current date is)
-//     const url = `https://api.aladhan.com/v1/gToH/${formattedDate}`;
-
-//     try {
-//         const response = await fetch(url);
-  
-//         // Check if response is OK
-//         if (!response.ok) {
-//           console.error(`Error fetching data for ${gregorianDate}: ${response.statusText}`);
-//         //   continue; // Skip to the next day if there's an error
-//         }
-  
-//         const data = await response.json();
-  
-//         if (data.code === 200) {
-//           const hijriDate = data.data.hijri.date;
-
-//           const hijriMonthNumber = data.data.hijri.month.number - 1;
-//           const hijriMonth = HijryMonths[hijriMonthNumber];
-//           displayHijriMonth(hijriMonth);
-
-
-//           hijriDates.push({ gregorian: gregorianDate, hijri: hijriDate });
-//         } else {
-//           console.error(`API Error: ${data.data}`);
-//         }
-//       } catch (error) {
-//         console.error("Network error or invalid response:", error);
-//       }
-
-
-//     for (let day = 1; day <= daysInMonth; day++) {
-
-//     const gregorianDate = `${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}-${year}`;
-//       const url = `https://api.aladhan.com/v1/gToH/${gregorianDate}`; // Correct API endpoint
-//     //   console.log('url: ', url)
-  
-//       try {
-//         const response = await fetch(url);
-  
-//         // Check if response is OK
-//         if (!response.ok) {
-//           console.error(`Error fetching data for ${gregorianDate}: ${response.statusText}`);
-//           continue; // Skip to the next day if there's an error
-//         }
-  
-//         const data = await response.json();
-  
-//         if (data.code === 200) {
-//           const hijriDate = data.data.hijri.date;
-
-//           const hijriMonthNumber = data.data.hijri.month.number - 1;
-//           const hijriMonth = HijryMonths[hijriMonthNumber];
-//           displayHijriMonth(hijriMonth);
-
-
-//           hijriDates.push({ gregorian: gregorianDate, hijri: hijriDate });
-//         } else {
-//           console.error(`API Error: ${data.data}`);
-//         }
-//       } catch (error) {
-//         console.error("Network error or invalid response:", error);
-//       }
-//     }
-  
-//     // console.log("Hijri Calendar for the month:", hijriDates);
-//     return hijriDates;
-//   }
-  // Example Usage: Get Hijri calendar for September 2024
  
   getHijriCalendarForMonth()
     .then((hijriCalendar) => {
@@ -1051,7 +961,6 @@ async function getHijriCalendarForMonth() {
     // Function to display Hijri month in HTML
     function displayHijriMonth(hijriMonth, hijriYear, hijriDay, GeorgianDate) {
       const hijriMonthElement = document.getElementById('hijriMonth');
-    //   hijriMonthElement.textContent
       hijriMonthElement.innerHTML = `${GeorgianDate}  / <span class="hijriSpan">${hijriDay} - ${hijriMonth}, ${hijriYear}</span>`;
     }
 
