@@ -288,7 +288,6 @@
         padding: 1%;
         height: 100%;
         font-size: 3em;
-        /* background-color: #f4f4f4; */
         background-color: #efe9e9ad;
         margin-left: 2%;
         border-left: 1px solid #ddd;
@@ -308,32 +307,39 @@
     }
 
     .sura h2 {
-        font-family: 'Amiri', serif;
-        text-align: center;
+
         /* position: fixed; */
     }
 
 
     /* Remove border from the last verse */
-    .verse:last-of-type {
-    border-bottom: none; /* Avoids a border after the last verse */
-    }
+    /* .verse:last-of-type {
+    border-bottom: none; /* Avoids a border after the last verse 
+    } */
 
-    CSS
+    /* CSS
     css
     Copy code
     .verse {
         padding: 10px 0;
-        border-bottom: 1px solid #0ce74f; /* Regular border for all verses */
+        border-bottom: 1px solid #0ce74f; /* Regular border for all verses 
+        position: relative;
+        padding-bottom: 25px; /* Adjust this value based on the height of the icon 
+    } */
+
+    .verse {
+        padding: 10px 0;
+        border-bottom: 1px solid #03453f; /* Regular border for all verses */
         position: relative;
         padding-bottom: 25px; /* Adjust this value based on the height of the icon */
     }
 
-    .verse:last-of-type {
-        border-bottom: none; /* Remove regular border */
-        position: relative; /* Needed for positioning the pseudo-element */
-        padding-bottom: 20px; /* Extra space for the design line */
-    }
+    /* .verse:last-of-type {
+        border-bottom: none; /* Remove regular border 
+        position: relative; /* Needed for positioning the pseudo-element 
+        padding-bottom: 20px; /* Extra space for the design line 
+    } */
+
 
     .verse:last-of-type::after {
         content: "";
@@ -343,6 +349,13 @@
         background-color: #4CAF50; /* Color of the design line (green) */
         margin: 10px auto 0; /* Centered and spaced from the text */
         border-radius: 5px; /* Rounded edges for the design line */
+    }
+
+    
+    #content-wrapper .verse::after {
+
+        background-color: #4CAF50; /* Color of the design line (green) */
+
     }
 
     /* For clickable view of the search line */
@@ -389,6 +402,8 @@
     .sura h2 {
         color: green; /* Green color for Surah name */
         margin-top: 0; /* Optional: adjust margin if needed */
+        font-family: 'Amiri', serif;
+        text-align: center;
     }
 
     .icon-number {
